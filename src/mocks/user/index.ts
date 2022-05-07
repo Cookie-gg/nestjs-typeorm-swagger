@@ -1,4 +1,4 @@
-import { User } from '~/user/user.model';
+import { User } from '~/entities/user';
 
 const user: User = {
   name: 'test',
