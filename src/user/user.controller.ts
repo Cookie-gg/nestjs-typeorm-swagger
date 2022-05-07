@@ -7,20 +7,22 @@ import {
   Post,
   Put,
 } from '@nestjs/common';
-import { ApiOperation, ApiTags } from '@nestjs/swagger';
-import { CreateUserInput, User } from './user.model';
+import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { CreateUserInput, User } from '../entities/user';
 
 @ApiTags('user')
 @Controller('user')
 export class UserController {
   @Post()
   @ApiOperation({ summary: 'Create user' })
+  @ApiResponse({ type: User })
   createUser(@Body() body: CreateUserInput): User {
     return body;
   }
 
   @Get()
   @ApiOperation({ summary: 'Get all users' })
+  @ApiResponse({ type: [User] })
   getAllUsers(): User[] {
     return [];
   }
