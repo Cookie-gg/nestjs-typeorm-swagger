@@ -1,12 +1,15 @@
 import { User } from '~/entities/user';
+import { RequiredPicks } from '~/types/addons';
 
-const user: User = {
+const user: RequiredPicks<User> = {
+  id: 1,
   name: 'test',
   uid: 'test_id',
+  email: 'test@example.com',
   password: 'drowssap',
 };
 
-const users: User[] = [user];
+const users = [user];
 
 export const mockUser = {
   user,

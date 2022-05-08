@@ -1,44 +1,82 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsLowercase, IsString, MinLength } from 'class-validator';
+import { IsEmail, IsLowercase, IsString, MinLength } from 'class-validator';
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  Index,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 
+@Entity('user')
 export class User {
-  @ApiProperty({
-    example: 'your name',
-    description: 'your name',
-    required: true,
-    type: String,
-  })
-  name: string;
+  @PrimaryGeneratedColumn()
+  id: number;
 
   @ApiProperty({
-    example: 'user_id',
-    description: 'the id for loging',
+    description: 'The id of user',
     required: true,
     type: String,
   })
+  @Column({ unique: true, nullable: false })
+  @IsString()
+  @MinLength(4)
+  @IsLowercase()
   uid: string;
 
   @ApiProperty({
-    example: 'your password',
-    description: 'your password',
+    description: 'Your name',
     required: true,
     type: String,
   })
-  password: string;
-}
-
-export class CreateUserInput extends User {
+  @Column({ nullable: false })
   @IsString()
-  @MinLength(4)
   name: string;
 
-  @IsString()
-  @IsLowercase()
-  @MinLength(4)
-  uid: string;
+  @ApiProperty({
+    description: 'Your name',
+    required: true,
+    type: String,
+  })
+  @Column({ unique: true, nullable: false })
+  @IsEmail()
+  email: string;
 
+  @ApiProperty({
+    description: 'Your password',
+    required: true,
+    type: String,
+  })
+  @Column({ nullable: false })
   @IsString()
-  @IsLowercase()
   @MinLength(8)
   password: string;
+
+  @ApiProperty({
+    description: 'Is Your account published?',
+    required: false,
+    type: Boolean,
+  })
+  @Column({ default: false, nullable: true })
+  published?: boolean;
+
+  @ApiProperty({
+    description: 'The date which the user was created',
+    readOnly: true,
+    required: false,
+    type: Date,
+  })
+  @Index('createdAt-idx')
+  @CreateDateColumn({ nullable: true })
+  readonly createdAt?: string;
+
+  @ApiProperty({
+    description: 'The date which the user was updated',
+    readOnly: true,
+    required: false,
+    type: Date,
+  })
+  @UpdateDateColumn({ nullable: true })
+  readonly updatedAt?: string;
 }
