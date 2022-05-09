@@ -12,7 +12,7 @@ import {
 @Entity('user')
 export class User {
   @PrimaryGeneratedColumn()
-  id: number;
+  readonly id?: number;
 
   @ApiProperty({
     description: 'The id of user',

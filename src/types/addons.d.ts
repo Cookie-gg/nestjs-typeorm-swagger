@@ -23,3 +23,4 @@ type ReadonlyKeys<T> = {
 }[keyof T];
 
 export type RequiredPicks<T> = Pick<T, RequiredKeys<T>>;
+export type WritablePicks<T> = Pick<T, WritableKeys<T>>;

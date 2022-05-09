@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { isEmail } from 'class-validator';
 import { DeleteResult, Repository, UpdateResult } from 'typeorm';
-import { RequiredPicks } from '~/types/addons';
+import { RequiredPicks, WritablePicks } from '~/types/addons';
 import { User } from '../entities/user';
 import * as bcrypt from 'bcrypt';
 
@@ -23,7 +23,7 @@ export class UserService {
     return this.userRepository.findOne(this.validateUniqueData(uniqueData));
   }
 
-  async update(uniqueData: string, updates: RequiredPicks<User>): Promise<UpdateResult> {
+  async update(uniqueData: string, updates: Partial<WritablePicks<User>>): Promise<UpdateResult> {
     return this.userRepository.update(this.validateUniqueData(uniqueData), updates);
   }
 
@@ -33,5 +33,9 @@ export class UserService {
 
   validateUniqueData(uniqueData: string): Partial<User> {
     return isEmail(uniqueData) ? { email: uniqueData } : { uid: uniqueData };
+  }
+
+  async clear() {
+    return this.userRepository.clear();
   }
 }

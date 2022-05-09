@@ -1,6 +1,6 @@
-/** @type {import('typeorm').ConnectionOptions} */
+import { ConnectionOptions } from 'typeorm';
 
-const config = {
+export const config: ConnectionOptions = {
   type: 'mysql',
   host: process.env.MYSQL_HOST,
   port: parseInt(process.env.MYSQL_PORT, 10),
@@ -15,5 +15,3 @@ const config = {
     migrationsDir: process.cwd() + '/src/migrations',
   },
 };
-
-module.exports = config;
