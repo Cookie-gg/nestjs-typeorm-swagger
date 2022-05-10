@@ -36,7 +36,6 @@ describe('AuthController (e2e)', () => {
     const res: TestResponse<Auth> = await request(app.getHttpServer())
       .post('/login')
       .send({ uniqueInfo: mocks.user.user.uid, password: 'drowsssap' });
-    console.log(res);
     const { user, ...rest } = res.body;
     token = rest.token;
     refreshToken = rest.refreshToken;
@@ -47,27 +46,31 @@ describe('AuthController (e2e)', () => {
     expect(res.body.user).toStrictEqual(expect.objectContaining(mocks.user.user));
   });
 
-  // it('/user:id (Get)', async () => {
-  //   const res: TestResponse<User> = await request(app.getHttpServer()).get(
-  //     `/user/${mocks.user.user.uid}`,
-  //   );
-  //   expect(res.body).toStrictEqual(expect.objectContaining(mocks.user.user));
-  // });
+  it('/status (POST)', async () => {
+    const res: TestResponse<Auth> = await request(app.getHttpServer())
+      .post('/status')
+      .set('authorization', `bearer ${token}`);
+    const { user, ...rest } = res.body;
+    token = rest.token;
+    refreshToken = rest.refreshToken;
+    Object.values(rest).map((token) => {
+      expect(token).not.toBeUndefined();
+      expect(token).not.toBeNull();
+    });
+    expect(res.body.user).toStrictEqual(expect.objectContaining(mocks.user.user));
+  });
 
-  // it('/user:id (Update)', async () => {
-  //   const res: TestResponse<UpdateResult> = await request(app.getHttpServer())
-  //     .put(`/user/${mocks.user.user.uid}`)
-  //     .send({
-  //       ...mocks.user.user,
-  //       email: 'updated@exmaple.com',
-  //     });
-  //   expect(res.body.affected).toBe(1);
-  // });
-
-  // it('/user:id (Delete)', async () => {
-  //   const res: TestResponse<DeleteResult> = await request(app.getHttpServer()).delete(
-  //     `/user/${mocks.user.user.uid}`,
-  //   );
-  //   expect(res.body.affected).toBe(1);
-  // });
+  it('/refresh (POST)', async () => {
+    const res: TestResponse<Auth> = await request(app.getHttpServer())
+      .post('/refresh')
+      .set('authorization', `bearer ${refreshToken}`);
+    const { user, ...rest } = res.body;
+    token = rest.token;
+    refreshToken = rest.refreshToken;
+    Object.values(rest).map((token) => {
+      expect(token).not.toBeUndefined();
+      expect(token).not.toBeNull();
+    });
+    expect(res.body.user).toStrictEqual(expect.objectContaining(mocks.user.user));
+  });
 });
