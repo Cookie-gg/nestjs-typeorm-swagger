@@ -5,6 +5,7 @@ import { mocks } from '~/mocks';
 import { UserController } from '~/user/user.controller';
 import { UserModule } from '~/user/user.module';
 import { UserService } from '~/user/user.service';
+import { User } from '~/entities/user';
 
 describe('UserController', () => {
   let controller: UserController;
@@ -12,7 +13,7 @@ describe('UserController', () => {
 
   beforeAll(async () => {
     module = await Test.createTestingModule({
-      imports: [TypeOrmModule.forRoot(config), UserModule],
+      imports: [TypeOrmModule.forRoot({ ...config, entities: [User] }), UserModule],
     }).compile();
     await module.get<UserService>(UserService).clear();
     controller = module.get<UserController>(UserController);

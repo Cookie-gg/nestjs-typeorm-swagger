@@ -1,16 +1,13 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { forwardRef, INestApplication } from '@nestjs/common';
+import { INestApplication } from '@nestjs/common';
 import * as request from 'supertest';
 import { mocks } from '~/mocks';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from '~/entities/user';
-import { UserModule } from '~/user/user.module';
 import { config } from '../ormconfig.test';
 import { UserService } from '~/user/user.service';
 import { TestResponse } from '~/types/api';
-import { DeleteResult, UpdateResult } from 'typeorm';
 import { Auth } from '~/entities/auth';
-import { AuthModule } from '~/auth/auth.module';
 import { AppModule } from '~/app.module';
 
 describe('AuthController (e2e)', () => {
@@ -35,7 +32,7 @@ describe('AuthController (e2e)', () => {
   it('/login (POST)', async () => {
     const res: TestResponse<Auth> = await request(app.getHttpServer())
       .post('/login')
-      .send({ uniqueInfo: mocks.user.user.uid, password: 'drowsssap' });
+      .send({ uniqueInfo: mocks.user.user.uid, password: 'drowssap' });
     const { user, ...rest } = res.body;
     token = rest.token;
     refreshToken = rest.refreshToken;
@@ -43,7 +40,7 @@ describe('AuthController (e2e)', () => {
       expect(token).not.toBeUndefined();
       expect(token).not.toBeNull();
     });
-    expect(res.body.user).toStrictEqual(expect.objectContaining(mocks.user.user));
+    expect(user).toStrictEqual(expect.objectContaining(mocks.user.user));
   });
 
   it('/status (POST)', async () => {
@@ -57,7 +54,7 @@ describe('AuthController (e2e)', () => {
       expect(token).not.toBeUndefined();
       expect(token).not.toBeNull();
     });
-    expect(res.body.user).toStrictEqual(expect.objectContaining(mocks.user.user));
+    expect(user).toStrictEqual(expect.objectContaining(mocks.user.user));
   });
 
   it('/refresh (POST)', async () => {
@@ -71,6 +68,6 @@ describe('AuthController (e2e)', () => {
       expect(token).not.toBeUndefined();
       expect(token).not.toBeNull();
     });
-    expect(res.body.user).toStrictEqual(expect.objectContaining(mocks.user.user));
+    expect(user).toStrictEqual(expect.objectContaining(mocks.user.user));
   });
 });
