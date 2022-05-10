@@ -31,7 +31,7 @@ describe('AuthController (e2e)', () => {
 
   it('/login (POST)', async () => {
     const res: TestResponse<Auth> = await request(app.getHttpServer())
-      .post('/login')
+      .post('/auth')
       .send({ uniqueInfo: mocks.user.user.uid, password: 'drowssap' });
     const { user, ...rest } = res.body;
     token = rest.token;
@@ -43,9 +43,9 @@ describe('AuthController (e2e)', () => {
     expect(user).toStrictEqual(expect.objectContaining(mocks.user.user));
   });
 
-  it('/status (POST)', async () => {
+  it('/auth/status (Get)', async () => {
     const res: TestResponse<Auth> = await request(app.getHttpServer())
-      .post('/status')
+      .get('/auth/status')
       .set('authorization', `bearer ${token}`);
     const { user, ...rest } = res.body;
     token = rest.token;
@@ -57,9 +57,9 @@ describe('AuthController (e2e)', () => {
     expect(user).toStrictEqual(expect.objectContaining(mocks.user.user));
   });
 
-  it('/refresh (POST)', async () => {
+  it('/auth/refresh (Get)', async () => {
     const res: TestResponse<Auth> = await request(app.getHttpServer())
-      .post('/refresh')
+      .get('/auth/refresh')
       .set('authorization', `bearer ${refreshToken}`);
     const { user, ...rest } = res.body;
     token = rest.token;
