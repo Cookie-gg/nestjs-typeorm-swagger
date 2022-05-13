@@ -8,6 +8,7 @@
   "scripts": {
     "prebuild": "rimraf dist",
     "build": "nest build",
+    "update": "ncu -u -x typeorm",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "NNODE_ENV=\"development\" nest start",
     "start:dev": "run-s prebuild && NODE_ENV=\"development\" nest start --watch",
