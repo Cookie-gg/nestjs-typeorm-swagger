@@ -1,8 +1,8 @@
 import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
 import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { RequiredPicks, WritablePicks } from '~/types/addons';
-import { User } from '../entities/user';
-import { UserService } from './user.service';
+import { WritablePicks } from '~/types/addons';
+import { CreateUserInput, User } from '~/domain/models/user';
+import { UserService } from '~/services';
 
 @ApiTags('user')
 @Controller('user')
@@ -12,7 +12,7 @@ export class UserController {
   @ApiOperation({ summary: 'Create user' })
   @ApiBody({ type: User })
   @ApiResponse({ type: User })
-  async createUser(@Body() body: RequiredPicks<User>): Promise<User> {
+  async createUser(@Body() body: CreateUserInput): Promise<User> {
     return await this.userService.create(body);
   }
 
@@ -39,7 +39,10 @@ export class UserController {
   @ApiOperation({ summary: 'Update user by unique data' })
   @ApiBody({ type: User })
   @ApiResponse({ type: User })
-  async updateUser(@Param() params: { id?: string }, @Body() body: Partial<WritablePicks<User>>) {
+  async updateUser(
+    @Param() params: { id?: string },
+    @Body() body: Partial<WritablePicks<CreateUserInput>>,
+  ) {
     return await this.userService.update(params.id, body);
   }
 }

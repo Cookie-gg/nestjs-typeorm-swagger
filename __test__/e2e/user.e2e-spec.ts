@@ -3,19 +3,20 @@ import { INestApplication } from '@nestjs/common';
 import * as request from 'supertest';
 import { mocks } from '~/mocks';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { User } from '~/entities/user';
-import { UserModule } from '~/user/user.module';
 import { config } from '../ormconfig.test';
-import { UserService } from '~/user/user.service';
 import { TestResponse } from '~/types/api';
 import { DeleteResult, UpdateResult } from 'typeorm';
+import { UserModule } from '~/modules/user';
+import { UserEntity } from '~/domain/entities/user';
+import { User } from '~/domain/models/user';
+import { UserService } from '~/services';
 
 describe('UserController (e2e)', () => {
   let app: INestApplication;
 
   beforeAll(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
-      imports: [TypeOrmModule.forRoot({ ...config, entities: [User] }), UserModule],
+      imports: [TypeOrmModule.forRoot({ ...config, entities: [UserEntity] }), UserModule],
     }).compile();
 
     app = moduleFixture.createNestApplication();

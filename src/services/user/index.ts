@@ -2,15 +2,18 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { isEmail } from 'class-validator';
 import { DeleteResult, Repository, UpdateResult } from 'typeorm';
-import { RequiredPicks, WritablePicks } from '~/types/addons';
-import { User } from '../entities/user';
+import { WritablePicks } from '~/types/addons';
 import * as bcrypt from 'bcrypt';
+import { CreateUserInput, User } from '~/domain/models/user';
+import { UserEntity } from '~/domain/entities/user';
 
 @Injectable()
 export class UserService {
-  constructor(@InjectRepository(User) private readonly userRepository: Repository<User>) {}
+  constructor(
+    @InjectRepository(UserEntity) private readonly userRepository: Repository<UserEntity>,
+  ) {}
 
-  async create(data: RequiredPicks<User>): Promise<User> {
+  async create(data: CreateUserInput): Promise<User> {
     data.password = await bcrypt.hash(data.password, 10);
     return this.userRepository.save(data);
   }

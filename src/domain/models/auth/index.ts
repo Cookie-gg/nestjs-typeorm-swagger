@@ -27,7 +27,7 @@ export class Auth {
   user: User;
 }
 
-export class LoginInputs {
+export class LoginAuthInput {
   @ApiProperty({
     description: 'Uid and email are unique value',
     required: true,

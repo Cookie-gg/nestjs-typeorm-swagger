@@ -1,28 +1,12 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsEmail, IsLowercase, IsString, MinLength } from 'class-validator';
-import {
-  Column,
-  CreateDateColumn,
-  Entity,
-  Index,
-  PrimaryGeneratedColumn,
-  UpdateDateColumn,
-} from 'typeorm';
 
-@Entity('user')
 export class User {
-  @PrimaryGeneratedColumn()
-  readonly id?: number;
-
   @ApiProperty({
     description: 'The id of user',
     required: true,
     type: String,
+    minLength: 4,
   })
-  @Column({ unique: true, nullable: false })
-  @IsString()
-  @MinLength(4)
-  @IsLowercase()
   uid: string;
 
   @ApiProperty({
@@ -30,8 +14,6 @@ export class User {
     required: true,
     type: String,
   })
-  @Column({ nullable: false })
-  @IsString()
   name: string;
 
   @ApiProperty({
@@ -39,18 +21,14 @@ export class User {
     required: true,
     type: String,
   })
-  @Column({ unique: true, nullable: false })
-  @IsEmail()
   email: string;
 
   @ApiProperty({
     description: 'Your password',
     required: true,
     type: String,
+    minLength: 8,
   })
-  @Column({ nullable: false })
-  @IsString()
-  @MinLength(8)
   password: string;
 
   @ApiProperty({
@@ -58,7 +36,6 @@ export class User {
     required: false,
     type: Boolean,
   })
-  @Column({ default: false, nullable: true })
   published?: boolean;
 
   @ApiProperty({
@@ -67,8 +44,6 @@ export class User {
     required: false,
     type: Date,
   })
-  @Index('createdAt-idx')
-  @CreateDateColumn({ nullable: true })
   readonly createdAt?: string;
 
   @ApiProperty({
@@ -77,6 +52,7 @@ export class User {
     required: false,
     type: Date,
   })
-  @UpdateDateColumn({ nullable: true })
   readonly updatedAt?: string;
 }
+
+export class CreateUserInput extends User {}

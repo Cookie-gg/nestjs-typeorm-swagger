@@ -3,12 +3,12 @@ import { INestApplication } from '@nestjs/common';
 import * as request from 'supertest';
 import { mocks } from '~/mocks';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { User } from '~/entities/user';
 import { config } from '../ormconfig.test';
-import { UserService } from '~/user/user.service';
 import { TestResponse } from '~/types/api';
-import { Auth } from '~/entities/auth';
 import { AppModule } from '~/app.module';
+import { Auth } from '~/domain/models/auth';
+import { UserService } from '~/services';
+import { UserEntity } from '~/domain/entities/user';
 
 describe('AuthController (e2e)', () => {
   let app: INestApplication;
@@ -17,7 +17,7 @@ describe('AuthController (e2e)', () => {
 
   beforeAll(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
-      imports: [TypeOrmModule.forRoot({ ...config, entities: [User] }), AppModule],
+      imports: [TypeOrmModule.forRoot({ ...config, entities: [UserEntity] }), AppModule],
     }).compile();
 
     app = moduleFixture.createNestApplication();

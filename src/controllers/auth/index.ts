@@ -1,9 +1,9 @@
 import { Controller, Get, Post, Req, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { ApiBody, ApiHeader, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { Auth, LoginInputs } from '~/entities/auth';
-import { User } from '~/entities/user';
-import { AuthService } from './auth.service';
+import { Auth, LoginAuthInput } from '~/domain/models/auth';
+import { User } from '~/domain/models/user';
+import { AuthService } from '~/services';
 
 @ApiTags('auth')
 @Controller('auth')
@@ -12,10 +12,10 @@ export class AuthController {
 
   @Post()
   @ApiOperation({ summary: 'Login' })
-  @ApiBody({ type: LoginInputs })
+  @ApiBody({ type: LoginAuthInput })
   @ApiResponse({ type: Auth })
   @UseGuards(AuthGuard('local'))
-  login(inputs: LoginInputs, @Req() req?: { user: User }) {
+  login(inputs: LoginAuthInput, @Req() req?: { user: User }) {
     return this.authService.login(req.user);
   }
 
