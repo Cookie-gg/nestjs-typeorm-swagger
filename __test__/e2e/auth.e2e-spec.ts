@@ -9,6 +9,7 @@ import { AppModule } from '~/app.module';
 import { Auth } from '~/domain/models/auth';
 import { UserService } from '~/services';
 import { UserEntity } from '~/domain/entities/user';
+import { NestFastifyApplication, FastifyAdapter } from '@nestjs/platform-fastify';
 
 describe('AuthController (e2e)', () => {
   let app: INestApplication;
@@ -20,8 +21,9 @@ describe('AuthController (e2e)', () => {
       imports: [TypeOrmModule.forRoot({ ...config, entities: [UserEntity] }), AppModule],
     }).compile();
 
-    app = moduleFixture.createNestApplication();
+    app = moduleFixture.createNestApplication<NestFastifyApplication>(new FastifyAdapter());
     await app.init();
+    await app.getHttpAdapter().getInstance().ready();
     const service = moduleFixture.get<UserService>(UserService);
     service.clear();
     await service.create({ ...mocks.user.user, password: 'drowssap' });

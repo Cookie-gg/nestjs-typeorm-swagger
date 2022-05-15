@@ -10,6 +10,7 @@ import { UserModule } from '~/modules/user';
 import { UserEntity } from '~/domain/entities/user';
 import { User } from '~/domain/models/user';
 import { UserService } from '~/services';
+import { NestFastifyApplication, FastifyAdapter } from '@nestjs/platform-fastify';
 
 describe('UserController (e2e)', () => {
   let app: INestApplication;
@@ -18,9 +19,9 @@ describe('UserController (e2e)', () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
       imports: [TypeOrmModule.forRoot({ ...config, entities: [UserEntity] }), UserModule],
     }).compile();
-
-    app = moduleFixture.createNestApplication();
+    app = moduleFixture.createNestApplication<NestFastifyApplication>(new FastifyAdapter());
     await app.init();
+    await app.getHttpAdapter().getInstance().ready();
     moduleFixture.get<UserService>(UserService).clear();
   });
 
