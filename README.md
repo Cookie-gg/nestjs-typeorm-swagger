@@ -24,7 +24,9 @@
 
 ## Description
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+A template of nestjs with swagger and typeorm
+
+> based from [Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
 
 ## Installation
 
@@ -45,6 +47,34 @@ $ npm run start:dev
 $ npm run start:prod
 ```
 
+## Prisma
+
+```bash
+# setup prisma for development
+$ npm run prisma:dev
+
+# setup prisma for test
+$ npm run prisma:test
+
+# run prisma docs
+$ npm run prisma:docs
+
+# run prisma studio
+$ npm run prisma:studio
+```
+
+## Databse
+
+You can use[MySQL](https://github.com/Cookie-gg/mysql-docker)
+
+```bash
+# build container
+docker compose up (-d: run in the background)
+
+# stop container
+docker compose down
+```
+
 ## Test
 
 ```bash
@@ -53,9 +83,6 @@ $ npm run test
 
 # e2e tests
 $ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
 ```
 
 ## Support
